@@ -1,0 +1,21 @@
+insert into subject values (1, "math");
+insert into subject values (2, "Introduction to Computer Science"); 
+insert into subject values (3, "Algorithms");
+insert into subject values (4, "Data Structures");
+insert into subject values (5, "Info and Rec");
+
+insert into question values(1, 4, "Why are interfaces important when considering data structures?");
+insert into question values(2, 4, "What	are	pointers? Why do we	use	them?");
+insert into question values(3, 4, "How do you know the size of an array in C++?");
+insert into question values(4, 4, "What is a memory leak, and how can we avoid them?");
+insert into question values(5, 5, "What is collaborative filtering?");
+insert into question values(6, 5, "What is a recommender system?");
+insert into question values(7, 5, "Give 4 examples of recommender systems as discussed in class");
+insert into question values(8, 3, "What is the big O complexity of Quick Sort and why?");
+insert into question values(9, 3, "Explain why or why not merge sort is stable");
+insert into question values(10, 3, "How does DFS work?");
+insert into question values(11, 3, "Design an efficient algorithm to match nuts and bolts. Bolts cannot be compared with other bolts and nuts cannot be compared to other nuts");
+insert into question values(12, 2, "What is an array and how does it work?");
+insert into question values(13, 2, "Write the pseudocode for an addition calculator function that takes two parameters (number A and number B)");
+insert into question values(14, 2, "What is a stack trace and why is it important?");
+insert into question values(15, 2, "Give valid syntax for the creation of a turtle");
