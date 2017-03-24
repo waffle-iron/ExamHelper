@@ -1,9 +1,9 @@
 create table if not exists subject(
-ID int primary key,
+ID int primary key autoincrement,
 sub text not null
 );
 create table if not exists question(
-qID int primary key,
+qID int primary key autoincrement,
 sID int not null,
 ques text not null
 );
