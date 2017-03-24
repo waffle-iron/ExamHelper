@@ -1,9 +1,9 @@
 create table if not exists subject(
 ID integer primary key autoincrement,
-sub text not null
+unique sub text not null
 );
 create table if not exists question(
 qID integer primary key autoincrement,
 sID int not null,
-ques text not null
+unique ques text not null
 );
