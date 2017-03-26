@@ -14,7 +14,7 @@ public class TestFailure {
 	}
 	
 	
-	public static boolean addToDatabase(string input){
+	public static boolean addToDatabase(String input){
 		if(input.indexOf('"') >= 0){
 			input = input.replaceAll("\"|\"", "");
 		}
