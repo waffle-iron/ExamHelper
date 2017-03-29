@@ -20,6 +20,11 @@ import java.sql.*;
 class Question{
     String question;
     String subject;
+    
+    Question(String sub, String ques){
+        subject = sub;
+        question = ques;
+    }
 }
 
 public class dbHelper{
@@ -30,7 +35,7 @@ public class dbHelper{
     public static String dbName = "ExamHelperDB";
     
     
-    public static void createDB(){
+    public static void connectToDB(){
         
         c = null;
         try{
@@ -51,27 +56,29 @@ public class dbHelper{
             String sql = "create table if not exists subject(ID integer primary key autoincrement, sub text not null unique);\n";
             sql += "create table if not exists question(qID integer primary key autoincrement, sID int not null, ques text not null unique);\n";
             stmt.executeUpdate(sql);
-            sql = "insert into subject values (null, \"Math\");\n" +
-                    "insert into subject values (null, \"Introduction to Computer Science\");\n" +
-                    "insert into subject values (null, \"Algorithms\");\n" +
-                    "insert into subject values (null, \"Data Structures\");\n" +
-                    "insert into subject values (null, \"Info and Rec\");";
-            stmt.executeUpdate(sql);
-            System.out.println("Created and populated the subject table");
             
+            //create sample questions to add
+            //should automatically add subjects 
+            Question q1 = new Question("Math","What is 5 x 5");
+            Question q2 = new Question("Data Structures","Why are interfaces important when considering data structures?");
+            Question q3 = new Question("Data Structures","How do you know the size of an array in C++?");
+            Question q4 = new Question("Info and Rec","What is collaborative filtering?");
+            Question q5 = new Question("Info and Rec","Give 4 examples of recommender systems as discussed in class");
+            Question q6 = new Question("Algorithms","How does DFS work?");
+            Question q7 = new Question("Intro to Comp Sci","Write the pseudocode for an addition calculator function that takes two parameters (number A and number B)");
+            Question q8 = new Question("Intro to Comp Sci","What is a stack trace and why is it important?");
+            Question q9 = new Question("Math","How many flip flops does toby wear?");
             
-            sql = "insert into question values(null, 4, \"Why are interfaces important when considering data structures?\");\n" +
-                    "insert into question values(null, 4, \"How do you know the size of an array in C++?\");\n" +
-                    "insert into question values(null, 5, \"What is collaborative filtering?\");\n" +
-                    "insert into question values(null, 5, \"Give 4 examples of recommender systems as discussed in class\");\n" +
-                    "insert into question values(null, 3, \"How does DFS work?\");\n" +
-                    "insert into question values(null, 2, \"Write the pseudocode for an addition calculator function that takes two parameters (number A and number B)\");\n" +
-                    "insert into question values(null, 2, \"What is a stack trace and why is it important?\");\n" + 
-                    "insert into question values(null, 1, \"What is 5 x 5\");\n" +
-                    "insert into question values(null, 1, \"How many flip flops does toby wear\");\n";
+            addQuestion(q1);
+            addQuestion(q2);
+            addQuestion(q3);
+            addQuestion(q4);
+            addQuestion(q5);
+            addQuestion(q6);
+            addQuestion(q7);
+            addQuestion(q8);
+            addQuestion(q9);
             
-            stmt.executeUpdate(sql);
-            System.out.println("Created and populated the question table");
         } catch (Exception e){ 
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
         }
@@ -105,11 +112,10 @@ public class dbHelper{
         try{
 //            // create the tables if they don't already exist
             stmt = c.createStatement();
-//            String sql = "create table if not exists subject(ID integer primary key autoincrement, sub text not null unique);\n";
-//            sql += "create table if not exists question(qID integer primary key autoincrement, sID int not null, ques text not null unique);\n";
-//            stmt.executeUpdate(sql);
-//          
-            String sql = "";
+            String sql = "create table if not exists subject(ID integer primary key autoincrement, sub text not null unique);\n";
+            sql += "create table if not exists question(qID integer primary key autoincrement, sID int not null, ques text not null unique);\n";
+            stmt.executeUpdate(sql);
+          
             //find out if the subject related to the question exists already
             sql = "select ID from subject where sub = '"+subject+"';";
             // select * from subject where sub = 'algorithms');
@@ -125,34 +131,33 @@ public class dbHelper{
                 sql = "insert into subject values (null, '"+subject+"');";
                 // insert into table subject values (null, 'algorithms');
                 stmt.executeUpdate(sql);
-                
                 // get newID now that it's added into the table
                 sql = "select ID from subject where sub = '"+subject+"';";
                 // select * from subject where sub = 'algorithms');
                 rs = stmt.executeQuery(sql);
                 subID = rs.getInt("ID");
             }
-            //if the subject does exist, make sure the question isn't already in the dB
-            else{
-                sql = "select qID from question where sid = "+subID+" and ques = \""+question+"\";";
-                //select qid from question where sid = 2 and ques = "What is a question?";
-                int qID = 0;
-                rs = stmt.executeQuery(sql);
-                while(rs.next()){
-                    qID = rs.getInt("qID");
-                }
-                
-                if(qID == 0){//if the question doesn't already exists
-                     //use the subID to insert the question into the question table
-                    sql = "insert into question values (null, "+subID+", '"+question+"');";
-                    //insert into table question values (null, 4, 'How does DFS work?');
-                    stmt.executeUpdate(sql);
-                }
-                else{
-                    System.out.println("Question already added");
-                }
-                
+            
+            //make sure the question isn't already in the dB
+            sql = "select qID from question where sid = "+subID+" and ques = \""+question+"\";";
+            //select qid from question where sid = 2 and ques = "What is a question?";
+            int qID = 0;
+            rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                qID = rs.getInt("qID");
             }
+
+            if(qID == 0){//if the question doesn't already exists
+                 //use the subID to insert the question into the question table
+                sql = "insert into question values (null, "+subID+", '"+question+"');";
+                //insert into table question values (null, 4, 'How does DFS work?');
+                stmt.executeUpdate(sql);
+            }
+            else{
+                System.out.println("Question already added");
+            }
+                
+   
             
         } catch (Exception e){ 
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
@@ -162,12 +167,12 @@ public class dbHelper{
     }
 
     public static void main(String[] args) {
-        createDB();
+        connectToDB();
 //        createPopTables();
-        Question q = new Question();
-        q.question = "What is the meaning of life?";
-        q.subject = "Memes";
-        addQuestion(q);
+//        Question q = new Question("Memes", "What is the meaning of life");
+//        addQuestion(q
+        deleteAll();
+        createPopTables();
         
         
     }
