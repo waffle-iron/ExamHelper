@@ -5,8 +5,7 @@
  */
 package controller;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -169,9 +168,9 @@ public class dbHelper{
     public static void main(String[] args) {
         connectToDB();
 //        createPopTables();
-//        Question q = new Question("Memes", "What is the meaning of life");
-//        addQuestion(q
-        deleteAll();
+        Question q = new Question("Memes", "What is the meaning of life");
+        addQuestion(q);
+//        deleteAll();
         createPopTables();
         
         
